@@ -1,12 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Header } from "@/components/Header";
+import { Hero } from "@/components/Hero";
+import { StatsOverview } from "@/components/StatsOverview";
+import { AppsDashboard } from "@/components/AppsDashboard";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-subtle">
+      <Header />
+      <Hero />
+      <StatsOverview />
+      <AppsDashboard />
+      
+      <footer className="border-t border-border py-8 mt-16">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
+          <p>&copy; 2024 AppMaster. Built with passion.</p>
+        </div>
+      </footer>
     </div>
   );
 };
