@@ -30,6 +30,7 @@ export const Navbar = () => {
     { name: "Services", section: "services", isRoute: false },
     { name: "AMC Plans", section: "amc", isRoute: false },
     { name: "Gallery", section: "gallery", isRoute: false },
+    { name: "Blog", section: "/blog", isRoute: true },
     { name: "About", section: "/about", isRoute: true },
     { name: "Contact", section: "contact", isRoute: false },
   ];
