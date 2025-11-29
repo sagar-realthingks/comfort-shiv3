@@ -1,4 +1,4 @@
-import { Phone, MessageCircle, CheckCircle, Clock, Shield, Users, Award, ThumbsUp, TrendingUp, X, ChevronLeft, ChevronRight, Rocket, Target, FileText, Star } from "lucide-react";
+import { Phone, MessageCircle, CheckCircle, Clock, Shield, Users, Award, ThumbsUp, TrendingUp, X, ChevronLeft, ChevronRight, Rocket, Target, FileText, Star, Sparkles, Zap, HeartHandshake, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LazyImage } from "@/components/LazyImage";
 import { CONTACT_INFO, SERVICES } from "@/config/contact";
-import { serviceAreas, faqItems, galleryImages } from "@/data/staticData";
+import { serviceAreas, faqItems, galleryImages, testimonials } from "@/data/staticData";
 import { useServices, useAmcPlans } from "@/contexts/DataStoreContext";
 import { useCountUp } from "@/hooks/useCountUp";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
@@ -152,25 +152,68 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section id="home" className="bg-accent section-padding-sm relative overflow-hidden scroll-mt-20">
+      <section id="home" className="relative overflow-hidden scroll-mt-20 bg-gradient-hero pattern-dots">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
         <motion.div 
-          className="container-wide relative z-10"
+          className="container-wide relative z-10 section-padding"
           style={{ y: heroY, opacity: heroOpacity }}
         >
-          <div className="text-center max-w-2xl mx-auto">
-            <h1 className="mb-3">Fast, Reliable AC Service in Pune & PCMC</h1>
-            <p className="text-muted-foreground mb-6 text-sm">
-              Same-day service • Expert technicians • Transparent pricing • Service warranty
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Button onClick={() => scrollToSection("contact")} size="lg">Book Service</Button>
-              <Button onClick={handleCall} variant="outline" size="lg" className="gap-2">
-                <Phone className="w-4 h-4" />Call Now
+          <div className="text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <Sparkles className="w-3.5 h-3.5 mr-1" />
+                7+ Years of Excellence
+              </Badge>
+              <h1 className="mb-4 text-gradient leading-tight">
+                Fast, Reliable AC Service in Pune & PCMC
+              </h1>
+              <p className="text-muted-foreground mb-8 text-base sm:text-lg max-w-2xl mx-auto">
+                Same-day service • Expert technicians • Transparent pricing • Service warranty
+              </p>
+            </motion.div>
+            
+            <motion.div 
+              className="flex flex-wrap justify-center gap-3 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Button onClick={() => scrollToSection("contact")} size="lg" className="group shadow-primary">
+                <span>Book Service</span>
+                <Zap className="w-4 h-4 ml-2 group-hover:scale-110 transition-transform" />
               </Button>
-              <Button onClick={() => handleWhatsApp()} size="lg" className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white">
-                <MessageCircle className="w-4 h-4" />WhatsApp
+              <Button onClick={handleCall} variant="outline" size="lg" className="gap-2 group">
+                <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                Call Now
               </Button>
-            </div>
+              <Button onClick={() => handleWhatsApp()} size="lg" className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white group">
+                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                WhatsApp
+              </Button>
+            </motion.div>
+
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              {[
+                { label: "AC Units Serviced", value: "10,000+" },
+                { label: "Happy Customers", value: "5,000+" },
+                { label: "Google Rating", value: "5.0/5" },
+                { label: "Same Day Service", value: "Available" }
+              ].map((stat, i) => (
+                <div key={i} className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">{stat.value}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </motion.div>
       </section>
@@ -178,32 +221,40 @@ const Home = () => {
       {/* Why Choose Us */}
       <section className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <h2 className="text-center mb-2">Why Choose Us?</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Trusted by thousands in Pune & PCMC
-          </p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="mb-3">Why Choose Us?</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Trusted by thousands in Pune & PCMC for professional AC services
+            </p>
+          </motion.div>
           
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
           >
             {[
-              { icon: Clock, title: "Same-Day Service", desc: "Quick response for urgent repairs" },
-              { icon: Shield, title: "Warranty Assured", desc: "Service warranty on all work" },
-              { icon: Users, title: "Expert Team", desc: "Certified technicians" },
-              { icon: TrendingUp, title: "Best Rates", desc: "Transparent pricing" }
+              { icon: Clock, title: "Same-Day Service", desc: "Quick response for urgent repairs", gradient: "from-blue-500 to-cyan-500" },
+              { icon: Shield, title: "Warranty Assured", desc: "Service warranty on all work", gradient: "from-purple-500 to-pink-500" },
+              { icon: Users, title: "Expert Team", desc: "Certified technicians", gradient: "from-orange-500 to-red-500" },
+              { icon: TrendingUp, title: "Best Rates", desc: "Transparent pricing", gradient: "from-green-500 to-teal-500" }
             ].map((item, index) => (
-              <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.3 }}>
-                <Card className="text-center card-hover h-full">
-                  <CardHeader className="pb-3">
-                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                      <item.icon className="w-6 h-6 text-primary" />
+              <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.5 }}>
+                <Card className="text-center card-hover card-glow h-full border-0 shadow-md bg-gradient-card">
+                  <CardHeader className="pb-4">
+                    <div className={`mx-auto w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center mb-4 icon-container-glow shadow-colored`}>
+                      <item.icon className="w-8 h-8 text-white" />
                     </div>
-                    <CardTitle className="text-base">{item.title}</CardTitle>
-                    <p className="text-xs text-muted-foreground pt-1">{item.desc}</p>
+                    <CardTitle className="text-lg mb-2">{item.title}</CardTitle>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </CardHeader>
                 </Card>
               </motion.div>
@@ -213,36 +264,50 @@ const Home = () => {
       </section>
 
       {/* Services & Pricing Section */}
-      <section id="services" className="section-padding-sm bg-accent/50 scroll-mt-20">
+      <section id="services" className="section-padding-sm bg-gradient-to-b from-background to-accent/30 scroll-mt-20">
         <div className="container-wide">
-          <h2 className="text-center mb-2">Our Services & Pricing</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Complete AC solutions with transparent pricing
-          </p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="mb-3">Our Services & Pricing</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Complete AC solutions with transparent pricing. No hidden charges, just honest service.
+            </p>
+          </motion.div>
           
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
           >
             {services.sort((a, b) => a.displayOrder - b.displayOrder).map((service, index) => (
-              <motion.div key={service.id} variants={fadeInUp} transition={{ duration: 0.3 }}>
-                <Card className="h-full card-hover">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base">{service.name}</CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">{service.description}</p>
+              <motion.div key={service.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
+                <Card className="h-full card-hover card-glow border-0 shadow-md bg-gradient-card overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8" />
+                  <CardHeader className="pb-3 relative">
+                    <CardTitle className="text-base group-hover:text-primary transition-colors">{service.name}</CardTitle>
+                    <p className="text-xs text-muted-foreground mt-1.5">{service.description}</p>
                   </CardHeader>
-                  <CardContent className="pb-2">
-                    <p className="text-sm font-semibold text-primary">{service.priceLabel}</p>
+                  <CardContent className="pb-3">
+                    <div className="mb-3">
+                      <div className="text-2xl font-bold text-gradient">{service.priceLabel}</div>
+                    </div>
                     {service.covered && service.covered.length > 0 && (
-                      <div className="mt-2 pt-2 border-t border-border/50">
-                        <span className="text-xs font-medium text-foreground block mb-1">What's Covered:</span>
-                        <ul className="space-y-0.5">
+                      <div className="pt-3 border-t border-border/50">
+                        <span className="text-xs font-semibold text-foreground block mb-2 flex items-center gap-1.5">
+                          <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                          What's Covered:
+                        </span>
+                        <ul className="space-y-1.5">
                           {service.covered.slice(0, 3).map((item, idx) => (
-                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1">
-                              <span className="text-primary">•</span>
+                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <span className="text-primary flex-shrink-0 mt-0.5">✓</span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -250,13 +315,13 @@ const Home = () => {
                       </div>
                     )}
                   </CardContent>
-                  <CardFooter className="gap-2 pt-2">
-                    <Button onClick={() => scrollToSection("contact")} size="sm" className="flex-1 h-8 text-xs">
+                  <CardFooter className="gap-2 pt-0">
+                    <Button onClick={() => scrollToSection("contact")} size="sm" className="flex-1 shadow-primary">
                       Book Now
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-1 h-8" onClick={() => handleWhatsApp(`Hi! I'd like to know more about ${service.name}.`)}>
+                    <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleWhatsApp(`Hi! I'd like to know more about ${service.name}.`)}>
                       <MessageCircle className="w-3.5 h-3.5" />
-                      <span className="text-xs">Ask</span>
+                      Ask
                     </Button>
                   </CardFooter>
                 </Card>
@@ -265,78 +330,210 @@ const Home = () => {
           </motion.div>
 
           {/* Important Notes & GST Info */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card className="bg-background border-border">
+          <motion.div 
+            className="grid md:grid-cols-2 gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Card className="bg-background border-border shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Important Notes</CardTitle>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" />
+                  Important Notes
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
-                  <li>• Final pricing confirmed after free inspection</li>
-                  <li>• Parts & materials charged separately if needed</li>
-                  <li>• All services include warranty</li>
-                  <li>• AMC customers get priority support & discounts</li>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>Final pricing confirmed after free inspection</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>Parts & materials charged separately if needed</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>All services include warranty</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>AMC customers get priority support & discounts</span>
+                  </li>
                 </ul>
               </CardContent>
             </Card>
-            <Card className="bg-primary/5 border border-primary/20">
+            <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/20 shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base text-primary">GST Invoice Available</CardTitle>
+                <CardTitle className="text-base text-primary flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  GST Invoice Available
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
-                  <li>• Official invoices for all services</li>
-                  <li>• Claim input tax credit on business expenses</li>
-                  <li>• GSTIN: <span className="font-mono text-foreground">{CONTACT_INFO.gstin}</span></li>
+                <p className="text-sm text-muted-foreground mb-3">
+                  GST registered business providing official invoices for all services.
+                </p>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>Official invoices for all services</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span>Claim input tax credit on business expenses</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="font-mono text-foreground">GSTIN: {CONTACT_INFO.gstin}</span>
+                  </li>
                 </ul>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-
-      {/* AMC Plans */}
-      <section id="amc" className="section-padding-sm bg-accent/50 scroll-mt-20">
+      {/* Testimonials Section */}
+      <section className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <h2 className="text-center mb-2">Annual Maintenance Plans</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Keep your AC running efficiently year-round
-          </p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20">
+              <HeartHandshake className="w-3.5 h-3.5 mr-1" />
+              Customer Testimonials
+            </Badge>
+            <h2 className="mb-3">What Our Customers Say</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Real reviews from real customers across Pune & PCMC
+            </p>
+          </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            {activePlans.map((plan) => (
-              <motion.div key={plan.id} variants={fadeInUp} transition={{ duration: 0.3 }}>
-                <Card className="card-hover h-full">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg">{plan.name}</CardTitle>
-                    <CardDescription className="text-xs">{plan.targetCustomer}</CardDescription>
-                    <div className="mt-2">
-                      <span className="text-2xl font-bold text-primary">{plan.priceLabel}</span>
-                      <p className="text-xs text-muted-foreground mt-1">{plan.visitsPerYear} visits/year</p>
+            {testimonials.filter(t => t.show_on_home).map((testimonial, index) => (
+              <motion.div key={testimonial.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
+                <Card className="h-full card-hover card-glow border-0 shadow-md bg-gradient-card">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <CardTitle className="text-base mb-1">{testimonial.name}</CardTitle>
+                        <p className="text-xs text-muted-foreground">{testimonial.city}</p>
+                      </div>
+                      <Quote className="w-8 h-8 text-primary/20" />
+                    </div>
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: testimonial.rating }).map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      ))}
                     </div>
                   </CardHeader>
-                  <CardContent className="pb-2">
-                    <ul className="space-y-1.5">
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      "{testimonial.review_text}"
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div 
+            className="text-center mt-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Button
+              onClick={() => window.open("https://www.google.com/search?q=comfort+technical+services+pune", "_blank")}
+              variant="outline"
+              size="lg"
+              className="gap-2 group"
+            >
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 group-hover:scale-110 transition-transform" />
+              Read More Reviews on Google
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+
+      {/* AMC Plans */}
+      <section id="amc" className="section-padding-sm bg-gradient-to-b from-accent/30 to-background scroll-mt-20">
+        <div className="container-wide">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 px-4 py-1.5 bg-secondary/10 text-secondary border-secondary/20">
+              <Award className="w-3.5 h-3.5 mr-1" />
+              AMC Plans
+            </Badge>
+            <h2 className="mb-3">Annual Maintenance Plans</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Keep your AC running efficiently year-round with our comprehensive maintenance plans
+            </p>
+          </motion.div>
+
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {activePlans.map((plan, index) => (
+              <motion.div key={plan.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
+                <Card className={`card-hover card-glow h-full border-0 shadow-md relative overflow-hidden ${
+                  index === 1 ? 'ring-2 ring-primary shadow-primary' : 'bg-gradient-card'
+                }`}>
+                  {index === 1 && (
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-primary text-primary-foreground shadow-primary">
+                        Popular
+                      </Badge>
+                    </div>
+                  )}
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary" />
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl mb-1">{plan.name}</CardTitle>
+                    <CardDescription className="text-sm">{plan.targetCustomer}</CardDescription>
+                    <div className="mt-4 p-4 bg-accent/50 rounded-lg">
+                      <div className="text-3xl font-bold text-gradient mb-1">{plan.priceLabel}</div>
+                      <p className="text-sm text-muted-foreground">{plan.visitsPerYear} visits/year</p>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-4">
+                    <ul className="space-y-2.5">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
-                          <span className="text-xs">{feature}</span>
+                        <li key={idx} className="flex items-start gap-2.5">
+                          <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-sm text-foreground">{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </CardContent>
-                  <CardFooter className="flex gap-2 pt-2">
-                    <Button onClick={() => scrollToSection("contact")} size="sm" className="flex-1">
+                  <CardFooter className="flex gap-2">
+                    <Button onClick={() => scrollToSection("contact")} className="flex-1 shadow-primary">
                       Enquire Now
                     </Button>
-                    <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => handleWhatsApp(`Hi! I'm interested in the ${plan.name} AMC plan.`)}>
+                    <Button variant="outline" size="icon" onClick={() => handleWhatsApp(`Hi! I'm interested in the ${plan.name} AMC plan.`)}>
                       <MessageCircle className="w-4 h-4" />
                     </Button>
                   </CardFooter>
@@ -348,12 +545,20 @@ const Home = () => {
       </section>
 
       {/* Service Areas */}
-      <section id="service-areas" className="section-padding-sm bg-accent/50 scroll-mt-20">
+      <section id="service-areas" className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <h2 className="text-center mb-2">Service Areas</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Serving Pune and Pimpri Chinchwad
-          </p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="mb-3">Service Areas</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Serving Pune and Pimpri Chinchwad with fast, reliable AC service
+            </p>
+          </motion.div>
 
           <div className="flex flex-wrap justify-center gap-2 mb-5">
             <Button variant={selectedCity === null ? "default" : "outline"} size="sm" onClick={() => setSelectedCity(null)}>
