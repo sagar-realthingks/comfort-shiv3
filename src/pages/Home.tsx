@@ -1,4 +1,4 @@
-import { Phone, MessageCircle, CheckCircle, Clock, Shield, Users, Award, ThumbsUp, TrendingUp, X, ChevronLeft, ChevronRight, Rocket, Target, FileText, Star, Sparkles, Zap, HeartHandshake, Quote, Flag, Calendar } from "lucide-react";
+import { Phone, MessageCircle, CheckCircle, Clock, Shield, Users, Award, ThumbsUp, TrendingUp, X, ChevronLeft, ChevronRight, Rocket, Target, FileText, Star, Sparkles, Zap, HeartHandshake, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -50,12 +50,11 @@ const Home = () => {
   ];
 
   const milestones = [
-    { year: "2018", title: "Foundation", description: "Started Comfort Technical Services in Pune with a vision to provide reliable AC services", icon: Flag, gradient: "from-blue-500 to-cyan-500", side: "left" },
-    { year: "2019", title: "First 500 Customers", description: "Reached our first 500 satisfied customers and expanded service coverage across Pune", icon: Users, gradient: "from-purple-500 to-pink-500", side: "right" },
-    { year: "2020", title: "GST Registration", description: "Became a registered GST business, offering professional invoices to all customers", icon: FileText, gradient: "from-orange-500 to-red-500", side: "left" },
-    { year: "2021", title: "PCMC Expansion", description: "Extended services to PCMC area including Akurdi, Chinchwad, and surrounding regions", icon: TrendingUp, gradient: "from-green-500 to-emerald-500", side: "right" },
-    { year: "2023", title: "10,000+ Services", description: "Crossed the milestone of 10,000+ AC units serviced with 5-star customer ratings", icon: Award, gradient: "from-indigo-500 to-purple-500", side: "left" },
-    { year: "2024", title: "AMC Programs", description: "Launched comprehensive Annual Maintenance Contract programs for homes and businesses", icon: Calendar, gradient: "from-rose-500 to-pink-500", side: "right" }
+    { year: "2018", title: "Foundation", description: "Started with a vision to provide reliable AC services in Pune", icon: Rocket },
+    { year: "2019", title: "500+ Customers", description: "Expanded coverage across Pune", icon: Target },
+    { year: "2020", title: "GST Registration", description: "Became registered GST business", icon: FileText },
+    { year: "2023", title: "10,000+ Services", description: "Crossed 10,000+ AC units serviced", icon: Star },
+    { year: "2024", title: "AMC Programs", description: "Launched comprehensive AMC plans", icon: Award }
   ];
 
   const handleCall = () => window.location.href = `tel:${CONTACT_INFO.phone}`;
@@ -261,88 +260,6 @@ const Home = () => {
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
-
-      {/* Our Journey Timeline */}
-      <section className="section-padding-sm bg-gradient-to-b from-accent/20 to-background relative overflow-hidden scroll-mt-20">
-        <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent pointer-events-none" />
-        
-        <div className="container-wide relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
-              <Zap className="w-3.5 h-3.5 mr-1" />
-              Our Story
-            </Badge>
-            <h2 className="mb-3">Our <span className="text-gradient">Journey</span></h2>
-            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
-              Growing together with our customers, one milestone at a time
-            </p>
-          </motion.div>
-
-          <div className="max-w-5xl mx-auto relative">
-            {/* Timeline Line - Desktop */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
-
-            {/* Timeline Items */}
-            <div className="space-y-12 md:space-y-24">
-              {milestones.map((milestone, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="relative"
-                >
-                  <div className={`flex flex-col md:flex-row items-center gap-6 ${milestone.side === 'left' ? 'md:flex-row-reverse' : ''}`}>
-                    {/* Content Card */}
-                    <div className={`w-full md:w-[calc(50%-2rem)] ${milestone.side === 'left' ? 'md:text-right' : ''}`}>
-                      <Card className="card-hover card-glow bg-gradient-card border-0 shadow-lg group">
-                        <CardHeader className="pb-3">
-                          <div className="flex items-center gap-3 mb-2 md:hidden">
-                            <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${milestone.gradient} flex items-center justify-center shadow-lg`}>
-                              <milestone.icon className="w-6 h-6 text-white" />
-                            </div>
-                            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                              {milestone.year}
-                            </Badge>
-                          </div>
-                          
-                          <Badge variant="outline" className="hidden md:inline-block w-fit bg-primary/10 text-primary border-primary/20 mb-3">
-                            {milestone.year}
-                          </Badge>
-                          
-                          <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                            {milestone.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {milestone.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    {/* Icon Node - Desktop Only */}
-                    <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary/60 items-center justify-center shadow-xl z-10 ring-4 ring-background group-hover:scale-110 transition-transform">
-                      <milestone.icon className="w-7 h-7 text-primary-foreground" />
-                    </div>
-
-                    {/* Spacer for layout */}
-                    <div className="hidden md:block w-[calc(50%-2rem)]" />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
