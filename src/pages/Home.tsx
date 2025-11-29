@@ -14,6 +14,7 @@ import { useServices, useAmcPlans } from "@/contexts/DataStoreContext";
 import { useCountUp } from "@/hooks/useCountUp";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { scrollToSection } from "@/utils/scrollToSection";
+import { openWhatsApp, buildWhatsAppUrl } from "@/utils/whatsappHelper";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -59,10 +60,6 @@ const Home = () => {
   ];
 
   const handleCall = () => window.location.href = `tel:${CONTACT_INFO.phone}`;
-  const handleWhatsApp = (customMessage?: string) => {
-    const message = encodeURIComponent(customMessage || "Hello! I would like to book an AC service.");
-    window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${message}`, "_blank");
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,22 +74,37 @@ const Home = () => {
       return;
     }
 
-    const messageParts = [
-      "*New Service Booking*", "",
-      `*Name:* ${formData.name}`,
-      `*Phone:* ${formData.phone}`,
-      formData.email && `*Email:* ${formData.email}`,
-      `*Service:* ${formData.serviceType}`,
-      `*AC Type:* ${formData.acType}`,
-      `*Units:* ${formData.units}`,
-      formData.preferredDate && `*Date:* ${formData.preferredDate}`,
-      formData.preferredTimeSlot && `*Time:* ${formData.preferredTimeSlot}`,
-      `*Address:* ${formData.address}, ${formData.city}${formData.pincode ? ` - ${formData.pincode}` : ''}`,
-      `*Contact Via:* ${formData.preferredContactMode}`,
-      formData.notes && `*Notes:* ${formData.notes}`
-    ].filter(Boolean).join("%0A");
+    // Validate input lengths for security
+    if (formData.name.length > 100) {
+      toast.error("Name must be less than 100 characters");
+      return;
+    }
 
-    window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${messageParts}`, "_blank");
+    if (formData.notes && formData.notes.length > 500) {
+      toast.error("Notes must be less than 500 characters");
+      return;
+    }
+
+    // Use the WhatsApp helper with form payload
+    openWhatsApp({
+      type: "form",
+      formData: {
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email?.trim(),
+        serviceType: formData.serviceType,
+        acType: formData.acType,
+        units: formData.units,
+        preferredDate: formData.preferredDate,
+        preferredTimeSlot: formData.preferredTimeSlot,
+        address: formData.address.trim(),
+        city: formData.city.trim(),
+        pincode: formData.pincode?.trim(),
+        preferredContactMode: formData.preferredContactMode,
+        notes: formData.notes?.trim()
+      }
+    });
+
     toast.success("Opening WhatsApp... Please send the message to complete your booking.");
     
     setFormData({
@@ -191,7 +203,14 @@ const Home = () => {
                 <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                 Call Now
               </Button>
-              <Button onClick={() => handleWhatsApp()} size="lg" className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white group">
+              <Button 
+                onClick={() => openWhatsApp({ 
+                  type: "general", 
+                  sourceSection: "Website - Hero Section" 
+                })} 
+                size="lg" 
+                className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white group"
+              >
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 WhatsApp
               </Button>
@@ -317,10 +336,31 @@ const Home = () => {
                     )}
                   </CardContent>
                   <CardFooter className="gap-2 pt-0">
-                    <Button onClick={() => scrollToSection("contact")} size="sm" className="flex-1 shadow-primary">
+                    <Button 
+                      onClick={() => openWhatsApp({ 
+                        type: "service",
+                        serviceName: service.name,
+                        priceLabel: service.priceLabel,
+                        description: service.description,
+                        sourceSection: "Website - Services Section (Book Now)"
+                      })}
+                      size="sm" 
+                      className="flex-1 shadow-primary"
+                    >
                       Book Now
                     </Button>
-                    <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleWhatsApp(`Hi! I'd like to know more about ${service.name}.`)}>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="gap-1.5" 
+                      onClick={() => openWhatsApp({ 
+                        type: "service",
+                        serviceName: service.name,
+                        priceLabel: service.priceLabel,
+                        description: service.description,
+                        sourceSection: "Website - Services Section (Ask)"
+                      })}
+                    >
                       <MessageCircle className="w-3.5 h-3.5" />
                       Ask
                     </Button>
@@ -531,10 +571,31 @@ const Home = () => {
                     </ul>
                   </CardContent>
                   <CardFooter className="flex gap-2">
-                    <Button onClick={() => scrollToSection("contact")} className="flex-1 shadow-primary">
+                    <Button 
+                      onClick={() => openWhatsApp({
+                        type: "amc",
+                        planName: plan.name,
+                        visitsPerYear: plan.visitsPerYear,
+                        priceLabel: plan.priceLabel,
+                        targetCustomer: plan.targetCustomer,
+                        sourceSection: "Website - AMC Plans Section (Enquire Now)"
+                      })}
+                      className="flex-1 shadow-primary"
+                    >
                       Enquire Now
                     </Button>
-                    <Button variant="outline" size="icon" onClick={() => handleWhatsApp(`Hi! I'm interested in the ${plan.name} AMC plan.`)}>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={() => openWhatsApp({
+                        type: "amc",
+                        planName: plan.name,
+                        visitsPerYear: plan.visitsPerYear,
+                        priceLabel: plan.priceLabel,
+                        targetCustomer: plan.targetCustomer,
+                        sourceSection: "Website - AMC Plans Section (Quick Ask)"
+                      })}
+                    >
                       <MessageCircle className="w-4 h-4" />
                     </Button>
                   </CardFooter>
@@ -602,7 +663,14 @@ const Home = () => {
               <p className="text-xs text-muted-foreground mb-3">
                 Contact us to check if we serve your location
               </p>
-              <Button onClick={() => handleWhatsApp("Hi! I'd like to check if you service my area.")} className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white">
+              <Button 
+                onClick={() => openWhatsApp({
+                  type: "general",
+                  sourceSection: "Website - Service Areas Section",
+                  customMessage: "*Service Area Enquiry*\n\nI'd like to check if you service my area.\n\nMy Location: (please specify)\n\nName: \nMobile Number: \n\n*Source:* Website - Service Areas Section"
+                })}
+                className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
+              >
                 <MessageCircle className="w-4 h-4" />Check Availability
               </Button>
             </CardContent>
@@ -904,7 +972,15 @@ const Home = () => {
                     <MessageCircle className="w-4 h-4 text-primary mt-0.5" />
                     <div>
                       <p className="text-sm font-medium">WhatsApp</p>
-                      <button onClick={() => handleWhatsApp()} className="text-xs text-primary hover:underline">Chat on WhatsApp</button>
+                      <button 
+                        onClick={() => openWhatsApp({
+                          type: "general",
+                          sourceSection: "Website - Contact Section (Quick Chat)"
+                        })} 
+                        className="text-xs text-primary hover:underline"
+                      >
+                        Chat on WhatsApp
+                      </button>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -923,7 +999,13 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground mb-3">For quick assistance, reach us on WhatsApp</p>
-                  <Button onClick={() => handleWhatsApp()} className="w-full gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white">
+                  <Button 
+                    onClick={() => openWhatsApp({
+                      type: "general",
+                      sourceSection: "Website - Contact Section (Quick Enquiry)"
+                    })}
+                    className="w-full gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
+                  >
                     <MessageCircle className="w-4 h-4" />Open WhatsApp
                   </Button>
                 </CardContent>
