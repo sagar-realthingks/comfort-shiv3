@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LazyImage } from "@/components/LazyImage";
+import { PriceCalculator } from "@/components/PriceCalculator";
 import { CONTACT_INFO, SERVICES } from "@/config/contact";
 import { serviceAreas, faqItems, galleryImages, testimonials } from "@/data/staticData";
 import { useServices, useAmcPlans } from "@/contexts/DataStoreContext";
@@ -602,6 +603,37 @@ const Home = () => {
                 </Card>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Price Calculator Section */}
+      <section className="section-padding-sm bg-gradient-to-b from-background via-primary/5 to-background scroll-mt-20">
+        <div className="container-wide">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20">
+              <Zap className="w-3.5 h-3.5 mr-1" />
+              Instant Estimates
+            </Badge>
+            <h2 className="mb-3">Calculate Your Service Cost</h2>
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Get transparent pricing estimates instantly. Select your AC type and service for accurate cost calculation.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <PriceCalculator />
           </motion.div>
         </div>
       </section>
