@@ -161,7 +161,7 @@
 
   .card-glow::before {
     content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none;
     background: radial-gradient(circle at center, hsl(217 91% 60% / 0.1), transparent 70%);
   }
 
