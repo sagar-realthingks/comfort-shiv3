@@ -212,16 +212,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services & Pricing Section */}
       <section id="services" className="section-padding-sm bg-accent/50 scroll-mt-20">
         <div className="container-wide">
-          <h2 className="text-center mb-2">Our Services</h2>
+          <h2 className="text-center mb-2">Our Services & Pricing</h2>
           <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Complete AC solutions for homes and businesses
+            Complete AC solutions with transparent pricing
           </p>
           
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -236,8 +236,21 @@ const Home = () => {
                   </CardHeader>
                   <CardContent className="pb-2">
                     <p className="text-sm font-semibold text-primary">{service.priceLabel}</p>
+                    {service.covered && service.covered.length > 0 && (
+                      <div className="mt-2 pt-2 border-t border-border/50">
+                        <span className="text-xs font-medium text-foreground block mb-1">What's Covered:</span>
+                        <ul className="space-y-0.5">
+                          {service.covered.slice(0, 3).map((item, idx) => (
+                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1">
+                              <span className="text-primary">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </CardContent>
-                  <CardFooter className="gap-2 pt-0">
+                  <CardFooter className="gap-2 pt-2">
                     <Button onClick={() => scrollToSection("contact")} size="sm" className="flex-1 h-8 text-xs">
                       Book Now
                     </Button>
@@ -250,19 +263,10 @@ const Home = () => {
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="section-padding-sm bg-background scroll-mt-20">
-        <div className="container-wide">
-          <h2 className="text-center mb-2">Pricing Overview</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Transparent pricing with no hidden charges
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <Card className="bg-accent border-0">
+          {/* Important Notes & GST Info */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card className="bg-background border-border">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Important Notes</CardTitle>
               </CardHeader>
@@ -282,7 +286,7 @@ const Home = () => {
               <CardContent>
                 <ul className="space-y-1.5 text-xs text-muted-foreground">
                   <li>• Official invoices for all services</li>
-                  <li>• Claim input tax credit</li>
+                  <li>• Claim input tax credit on business expenses</li>
                   <li>• GSTIN: <span className="font-mono text-foreground">{CONTACT_INFO.gstin}</span></li>
                 </ul>
               </CardContent>
@@ -290,6 +294,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
 
       {/* AMC Plans */}
       <section id="amc" className="section-padding-sm bg-accent/50 scroll-mt-20">
@@ -343,7 +348,7 @@ const Home = () => {
       </section>
 
       {/* Service Areas */}
-      <section id="service-areas" className="section-padding-sm bg-background scroll-mt-20">
+      <section id="service-areas" className="section-padding-sm bg-accent/50 scroll-mt-20">
         <div className="container-wide">
           <h2 className="text-center mb-2">Service Areas</h2>
           <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
@@ -399,142 +404,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About */}
-      <section id="about" className="section-padding-sm bg-accent/50 scroll-mt-20">
-        <div className="container-wide">
-          <h2 className="text-center mb-2">About {CONTACT_INFO.companyName}</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
-            Your trusted AC service partner since 2018
-          </p>
-
-          <div className="max-w-2xl mx-auto mb-8">
-            <Card className="bg-background">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Our Story</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Since 2018, we've been providing professional AC services in Pune & PCMC. With 7+ years of experience, we deliver reliable installation, maintenance, and repair services with outstanding customer care and transparent pricing.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {stats.map((stat, index) => {
-              const StatCounter = () => {
-                const { count, ref } = useCountUp(stat.value, 2000);
-                return (
-                  <div ref={ref} className="text-2xl font-bold text-primary mb-1">
-                    {stat.isDecimal ? count.toFixed(1) : count.toLocaleString()}{stat.suffix}
-                  </div>
-                );
-              };
-
-              return (
-                <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.3 }}>
-                  <Card className="text-center p-4">
-                    <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
-                    <StatCounter />
-                    <div className="text-xs text-muted-foreground">{stat.label}</div>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-base font-semibold text-center mb-4">Our Journey</h3>
-            <div className="space-y-3">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                >
-                  <Card className="bg-background">
-                    <CardContent className="p-4 flex items-start gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <milestone.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-xs font-bold text-primary">{milestone.year}</span>
-                          <span className="text-sm font-semibold">{milestone.title}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">{milestone.description}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQs */}
-      <section id="faqs" className="section-padding-sm bg-background scroll-mt-20">
-        <div className="container-narrow">
-          <h2 className="text-center mb-2">Frequently Asked Questions</h2>
-          <p className="text-center text-muted-foreground text-sm mb-6">
-            Common questions about our AC services
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-2 mb-5">
-            <Button variant={selectedCategory === null ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(null)}>
-              All
-            </Button>
-            {categories.map(category => (
-              <Button key={category} variant={selectedCategory === category ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(category)}>
-                {category}
-              </Button>
-            ))}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={selectedCategory || "all"}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25 }}
-            >
-              <Accordion type="single" collapsible className="w-full">
-                {filteredFaqs.map((faq, index) => (
-                  <AccordionItem key={faq.id} value={`item-${index}`}>
-                    <AccordionTrigger className="text-sm text-left py-3">{faq.question}</AccordionTrigger>
-                    <AccordionContent className="text-sm text-muted-foreground pb-4">{faq.answer}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </motion.div>
-          </AnimatePresence>
-
-          <Card className="mt-8 bg-accent text-center">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Still Have Questions?</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground mb-3">
-                Contact us directly for any queries
-              </p>
-              <Button onClick={() => scrollToSection("contact")}>Contact Us</Button>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
       {/* Gallery */}
-      <section id="gallery" className="section-padding-sm bg-accent/50 scroll-mt-20">
+      <section id="gallery" className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
           <h2 className="text-center mb-2">Our Work Gallery</h2>
           <p className="text-center text-muted-foreground text-sm mb-6">
@@ -637,8 +508,142 @@ const Home = () => {
         </AnimatePresence>
       </section>
 
+      {/* About & FAQs Section */}
+      <section id="about" className="section-padding-sm bg-accent/50 scroll-mt-20">
+        <div className="container-wide">
+          <h2 className="text-center mb-2">About Us</h2>
+          <p className="text-center text-muted-foreground text-sm mb-6 max-w-xl mx-auto">
+            Your trusted AC service partner in Pune & PCMC since 2018
+          </p>
+
+          <div className="max-w-2xl mx-auto mb-8">
+            <Card className="bg-background">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Our Story</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p>Since 2018, we've been providing professional AC services in Pune & PCMC. With 7+ years of experience, we deliver reliable installation, maintenance, and repair services to homes and businesses.</p>
+                  <p>We prioritize outstanding customer service through prompt repairs, clear communication, and affordable pricing. We've worked with multiple companies in Pune, building lasting relationships through professionalism and quality care.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {stats.map((stat, index) => {
+              const StatCounter = () => {
+                const { count, ref } = useCountUp(stat.value, 2000);
+                return (
+                  <div ref={ref} className="text-2xl font-bold text-primary mb-1">
+                    {stat.isDecimal ? count.toFixed(1) : count.toLocaleString()}{stat.suffix}
+                  </div>
+                );
+              };
+
+              return (
+                <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.3 }}>
+                  <Card className="text-center p-4">
+                    <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <StatCounter />
+                    <div className="text-xs text-muted-foreground">{stat.label}</div>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          <div className="max-w-3xl mx-auto">
+            <h3 className="text-base font-semibold text-center mb-4">Our Journey</h3>
+            <div className="space-y-3">
+              {milestones.map((milestone, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  <Card className="bg-background">
+                    <CardContent className="p-4 flex items-start gap-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <milestone.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <span className="text-xs font-bold text-primary">{milestone.year}</span>
+                          <span className="text-sm font-semibold">{milestone.title}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{milestone.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="mt-10">
+            <h3 className="text-lg font-semibold text-center mb-2">Frequently Asked Questions</h3>
+            <p className="text-center text-muted-foreground text-xs mb-6 max-w-xl mx-auto">
+              Common questions about our AC services
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-2 mb-5 max-w-2xl mx-auto">
+              <Button variant={selectedCategory === null ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(null)}>
+                All
+              </Button>
+              {categories.map(category => (
+                <Button key={category} variant={selectedCategory === category ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(category)}>
+                  {category}
+                </Button>
+              ))}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedCategory || "all"}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.25 }}
+                className="max-w-2xl mx-auto"
+              >
+                <Accordion type="single" collapsible className="w-full">
+                  {filteredFaqs.map((faq, index) => (
+                    <AccordionItem key={faq.id} value={`item-${index}`}>
+                      <AccordionTrigger className="text-sm text-left py-3">{faq.question}</AccordionTrigger>
+                      <AccordionContent className="text-sm text-muted-foreground pb-4">{faq.answer}</AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </motion.div>
+            </AnimatePresence>
+
+            <Card className="mt-6 bg-background text-center max-w-lg mx-auto">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Still Have Questions?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Contact us directly for any queries
+                </p>
+                <Button onClick={() => scrollToSection("contact")} size="sm">Contact Us</Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Contact */}
-      <section id="contact" className="section-padding bg-background scroll-mt-20">
+      <section id="contact" className="section-padding bg-accent/50 scroll-mt-20">
         <div className="container-wide">
           <h2 className="text-center mb-2">Contact Us & Book Service</h2>
           <p className="text-center text-muted-foreground text-sm mb-6">

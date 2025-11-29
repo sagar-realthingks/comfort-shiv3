@@ -12,7 +12,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   
-  const sections = ["home", "services", "pricing", "amc", "service-areas", "about", "faqs", "gallery", "contact"];
+  const sections = ["home", "services", "amc", "service-areas", "gallery", "about", "contact"];
   const activeSection = useScrollSpy(sections, 100);
 
   const handleCall = () => {
@@ -27,12 +27,10 @@ export const Navbar = () => {
   const navLinks = [
     { name: "Home", section: "home" },
     { name: "Services", section: "services" },
-    { name: "Pricing", section: "pricing" },
     { name: "AMC Plans", section: "amc" },
     { name: "Service Areas", section: "service-areas" },
-    { name: "About", section: "about" },
-    { name: "FAQs", section: "faqs" },
     { name: "Gallery", section: "gallery" },
+    { name: "About", section: "about" },
     { name: "Contact", section: "contact" },
   ];
 
