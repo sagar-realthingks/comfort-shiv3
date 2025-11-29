@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CONTACT_INFO } from "@/config/contact";
@@ -11,8 +11,9 @@ import { useScrollSpy } from "@/hooks/useScrollSpy";
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
-  const sections = ["home", "services", "amc", "service-areas", "gallery", "about", "contact"];
+  const sections = ["home", "services", "amc", "gallery", "contact"];
   const activeSection = useScrollSpy(sections, 100);
 
   const handleCall = () => {
@@ -25,17 +26,18 @@ export const Navbar = () => {
   };
 
   const navLinks = [
-    { name: "Home", section: "home" },
-    { name: "Services", section: "services" },
-    { name: "AMC Plans", section: "amc" },
-    { name: "Service Areas", section: "service-areas" },
-    { name: "Gallery", section: "gallery" },
-    { name: "About", section: "about" },
-    { name: "Contact", section: "contact" },
+    { name: "Home", section: "home", isRoute: false },
+    { name: "Services", section: "services", isRoute: false },
+    { name: "AMC Plans", section: "amc", isRoute: false },
+    { name: "Gallery", section: "gallery", isRoute: false },
+    { name: "About", section: "/about", isRoute: true },
+    { name: "Contact", section: "contact", isRoute: false },
   ];
 
-  const handleNavClick = (section: string) => {
-    if (location.pathname !== "/") {
+  const handleNavClick = (section: string, isRoute: boolean) => {
+    if (isRoute) {
+      navigate(section);
+    } else if (location.pathname !== "/") {
       window.location.href = `/#${section}`;
     } else {
       scrollToSection(section);
@@ -43,7 +45,10 @@ export const Navbar = () => {
     setIsOpen(false);
   };
 
-  const isActive = (section: string) => {
+  const isActive = (section: string, isRoute: boolean) => {
+    if (isRoute) {
+      return location.pathname === section;
+    }
     if (location.pathname === "/") {
       return activeSection === section;
     }
@@ -68,7 +73,7 @@ export const Navbar = () => {
       <div className="container-wide">
         <div className="flex justify-between items-center h-14">
           <button 
-            onClick={() => handleNavClick("home")}
+            onClick={() => handleNavClick("home", false)}
             className="hover:opacity-80 transition-opacity flex-shrink-0 flex items-center gap-2"
           >
             <img src={logo} alt={CONTACT_INFO.companyName} className="h-8 sm:h-10 w-auto" />
@@ -79,9 +84,9 @@ export const Navbar = () => {
             {navLinks.map((link) => (
               <button
                 key={link.name}
-                onClick={() => handleNavClick(link.section)}
+                onClick={() => handleNavClick(link.section, link.isRoute)}
                 className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  isActive(link.section)
+                  isActive(link.section, link.isRoute)
                     ? "text-primary bg-primary/5"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
@@ -176,9 +181,9 @@ export const Navbar = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <button 
-                    onClick={() => handleNavClick(link.section)}
+                    onClick={() => handleNavClick(link.section, link.isRoute)}
                     className={`w-full text-left block px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                      isActive(link.section)
+                      isActive(link.section, link.isRoute)
                         ? "text-primary bg-primary/5"
                         : "text-foreground hover:bg-accent"
                     }`}
