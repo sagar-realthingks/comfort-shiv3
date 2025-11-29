@@ -50,11 +50,12 @@ const Home = () => {
   ];
 
   const milestones = [
-    { year: "2018", title: "Foundation", description: "Started with a vision to provide reliable AC services in Pune", icon: Rocket },
-    { year: "2019", title: "500+ Customers", description: "Expanded coverage across Pune", icon: Target },
-    { year: "2020", title: "GST Registration", description: "Became registered GST business", icon: FileText },
-    { year: "2023", title: "10,000+ Services", description: "Crossed 10,000+ AC units serviced", icon: Star },
-    { year: "2024", title: "AMC Programs", description: "Launched comprehensive AMC plans", icon: Award }
+    { year: "2018", title: "Foundation", description: "Started Comfort Technical Services in Pune with a vision to provide reliable AC services", icon: Rocket },
+    { year: "2019", title: "First 500 Customers", description: "Reached our first 500 satisfied customers and expanded service coverage across Pune", icon: Target },
+    { year: "2020", title: "GST Registration", description: "Became a registered GST business, offering professional invoices to all customers", icon: FileText },
+    { year: "2021", title: "PCMC Expansion", description: "Extended services to PCMC area including Akurdi, Chinchwad, and surrounding regions", icon: TrendingUp },
+    { year: "2023", title: "10,000+ Services", description: "Crossed the milestone of 10,000+ AC units serviced with 5-star customer ratings", icon: Star },
+    { year: "2024", title: "AMC Programs", description: "Launched comprehensive Annual Maintenance Contract programs for homes and businesses", icon: Award }
   ];
 
   const handleCall = () => window.location.href = `tel:${CONTACT_INFO.phone}`;
@@ -764,33 +765,63 @@ const Home = () => {
             })}
           </motion.div>
 
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-base font-semibold text-center mb-4">Our Journey</h3>
-            <div className="space-y-3">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.3 }}
-                >
-                  <Card className="bg-background">
-                    <CardContent className="p-4 flex items-start gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                        <milestone.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-xs font-bold text-primary">{milestone.year}</span>
-                          <span className="text-sm font-semibold">{milestone.title}</span>
+          <div className="max-w-5xl mx-auto">
+            <h3 className="text-xl font-bold text-center mb-12">Our Journey</h3>
+            <div className="relative">
+              {/* Center vertical line */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary transform -translate-x-1/2 hidden md:block" />
+              
+              <div className="space-y-12">
+                {milestones.map((milestone, index) => {
+                  const isLeft = index % 2 === 0;
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.15, duration: 0.5 }}
+                      className="relative"
+                    >
+                      <div className={`flex items-center gap-8 ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                        {/* Card */}
+                        <div className="flex-1">
+                          <Card className="bg-background border-primary/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <CardContent className="p-6">
+                              <div className={`flex items-start gap-4 ${isLeft ? '' : 'md:flex-row-reverse md:text-right'}`}>
+                                <Badge className="bg-primary/10 text-primary border-primary/20 text-sm px-3 py-1 shrink-0">
+                                  {milestone.year}
+                                </Badge>
+                                <div className="flex-1">
+                                  <h4 className="text-lg font-bold mb-2">{milestone.title}</h4>
+                                  <p className="text-sm text-muted-foreground leading-relaxed">
+                                    {milestone.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
                         </div>
-                        <p className="text-xs text-muted-foreground">{milestone.description}</p>
+
+                        {/* Center icon */}
+                        <div className="hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-primary shadow-lg shadow-primary/30 flex-shrink-0 relative z-10 border-4 border-background">
+                          <milestone.icon className="w-7 h-7 text-primary-foreground" />
+                        </div>
+
+                        {/* Spacer for alignment */}
+                        <div className="flex-1 hidden md:block" />
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+
+                      {/* Mobile icon */}
+                      <div className="md:hidden absolute -left-4 top-6">
+                        <div className="w-10 h-10 rounded-full bg-primary shadow-md flex items-center justify-center">
+                          <milestone.icon className="w-5 h-5 text-primary-foreground" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
