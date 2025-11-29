@@ -18,23 +18,32 @@ import { scrollToSection } from "@/utils/scrollToSection";
 import { openWhatsApp, buildWhatsAppUrl } from "@/utils/whatsappHelper";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-
 const Home = () => {
-  const { scrollY } = useScroll();
+  const {
+    scrollY
+  } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-
   const [services] = useServices();
   const [amcPlans] = useAmcPlans();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [lightboxImageLoading, setLightboxImageLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  
   const [formData, setFormData] = useState({
-    name: "", phone: "", email: "", serviceType: "", acType: "", units: "1",
-    preferredDate: "", preferredTimeSlot: "", address: "", city: "", pincode: "",
-    preferredContactMode: "Call", notes: ""
+    name: "",
+    phone: "",
+    email: "",
+    serviceType: "",
+    acType: "",
+    units: "1",
+    preferredDate: "",
+    preferredTimeSlot: "",
+    address: "",
+    city: "",
+    pincode: "",
+    preferredContactMode: "Call",
+    notes: ""
   });
 
   // Prepare data
@@ -43,33 +52,66 @@ const Home = () => {
   const filteredAreas = selectedCity ? serviceAreas.filter(area => area.city === selectedCity) : serviceAreas;
   const categories = [...new Set(faqItems.map(faq => faq.category))];
   const filteredFaqs = selectedCategory ? faqItems.filter(faq => faq.category === selectedCategory) : faqItems;
-
-  const stats = [
-    { icon: Award, label: "Years Experience", value: 7, suffix: "+" },
-    { icon: Users, label: "AC Units Serviced", value: 10000, suffix: "+" },
-    { icon: ThumbsUp, label: "Google Reviews", value: 57, suffix: "" },
-    { icon: Clock, label: "Google Rating", value: 5.0, suffix: "/5", isDecimal: true }
-  ];
-
-  const milestones = [
-    { year: "2018", title: "Foundation", description: "Started Comfort Technical Services in Pune with a vision to provide reliable AC services", icon: Rocket },
-    { year: "2019", title: "First 500 Customers", description: "Reached our first 500 satisfied customers and expanded service coverage across Pune", icon: Target },
-    { year: "2020", title: "GST Registration", description: "Became a registered GST business, offering professional invoices to all customers", icon: FileText },
-    { year: "2021", title: "PCMC Expansion", description: "Extended services to PCMC area including Akurdi, Chinchwad, and surrounding regions", icon: TrendingUp },
-    { year: "2023", title: "10,000+ Services", description: "Crossed the milestone of 10,000+ AC units serviced with 5-star customer ratings", icon: Star },
-    { year: "2024", title: "AMC Programs", description: "Launched comprehensive Annual Maintenance Contract programs for homes and businesses", icon: Award }
-  ];
-
+  const stats = [{
+    icon: Award,
+    label: "Years Experience",
+    value: 7,
+    suffix: "+"
+  }, {
+    icon: Users,
+    label: "AC Units Serviced",
+    value: 10000,
+    suffix: "+"
+  }, {
+    icon: ThumbsUp,
+    label: "Google Reviews",
+    value: 57,
+    suffix: ""
+  }, {
+    icon: Clock,
+    label: "Google Rating",
+    value: 5.0,
+    suffix: "/5",
+    isDecimal: true
+  }];
+  const milestones = [{
+    year: "2018",
+    title: "Foundation",
+    description: "Started Comfort Technical Services in Pune with a vision to provide reliable AC services",
+    icon: Rocket
+  }, {
+    year: "2019",
+    title: "First 500 Customers",
+    description: "Reached our first 500 satisfied customers and expanded service coverage across Pune",
+    icon: Target
+  }, {
+    year: "2020",
+    title: "GST Registration",
+    description: "Became a registered GST business, offering professional invoices to all customers",
+    icon: FileText
+  }, {
+    year: "2021",
+    title: "PCMC Expansion",
+    description: "Extended services to PCMC area including Akurdi, Chinchwad, and surrounding regions",
+    icon: TrendingUp
+  }, {
+    year: "2023",
+    title: "10,000+ Services",
+    description: "Crossed the milestone of 10,000+ AC units serviced with 5-star customer ratings",
+    icon: Star
+  }, {
+    year: "2024",
+    title: "AMC Programs",
+    description: "Launched comprehensive Annual Maintenance Contract programs for homes and businesses",
+    icon: Award
+  }];
   const handleCall = () => window.location.href = `tel:${CONTACT_INFO.phone}`;
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!formData.name || !formData.phone || !formData.serviceType || !formData.acType || !formData.address || !formData.city) {
       toast.error("Please fill in all required fields");
       return;
     }
-
     if (!/^\d{10}$/.test(formData.phone)) {
       toast.error("Please enter a valid 10-digit mobile number");
       return;
@@ -80,7 +122,6 @@ const Home = () => {
       toast.error("Name must be less than 100 characters");
       return;
     }
-
     if (formData.notes && formData.notes.length > 500) {
       toast.error("Notes must be less than 500 characters");
       return;
@@ -105,13 +146,21 @@ const Home = () => {
         notes: formData.notes?.trim()
       }
     });
-
     toast.success("Opening WhatsApp... Please send the message to complete your booking.");
-    
     setFormData({
-      name: "", phone: "", email: "", serviceType: "", acType: "", units: "1",
-      preferredDate: "", preferredTimeSlot: "", address: "", city: "", pincode: "",
-      preferredContactMode: "Call", notes: ""
+      name: "",
+      phone: "",
+      email: "",
+      serviceType: "",
+      acType: "",
+      units: "1",
+      preferredDate: "",
+      preferredTimeSlot: "",
+      address: "",
+      city: "",
+      pincode: "",
+      preferredContactMode: "Call",
+      notes: ""
     });
   };
 
@@ -121,15 +170,12 @@ const Home = () => {
     setLightboxImageLoading(true);
     setSelectedImageIndex(prev => prev === null || prev === 0 ? galleryImages.length - 1 : prev - 1);
   };
-
   const handleNext = () => {
     if (selectedImageIndex === null) return;
     setLightboxImageLoading(true);
     setSelectedImageIndex(prev => prev === null || prev === galleryImages.length - 1 ? 0 : prev + 1);
   };
-
   const selectedImage = selectedImageIndex !== null ? galleryImages[selectedImageIndex] : null;
-
   useEffect(() => {
     if (selectedImageIndex === null) return;
     const preload = (index: number) => {
@@ -141,13 +187,10 @@ const Home = () => {
     preload(selectedImageIndex - 1);
     preload(selectedImageIndex + 1);
   }, [selectedImageIndex]);
-
   useEffect(() => {
     if (selectedImageIndex === null) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedImageIndex(null);
-      else if (e.key === "ArrowLeft") handlePrevious();
-      else if (e.key === "ArrowRight") handleNext();
+      if (e.key === "Escape") setSelectedImageIndex(null);else if (e.key === "ArrowLeft") handlePrevious();else if (e.key === "ArrowRight") handleNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -155,29 +198,41 @@ const Home = () => {
 
   // Animation variants
   const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
+      y: 0
+    }
   };
-
   const staggerContainer = {
-    visible: { transition: { staggerChildren: 0.1 } }
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   };
-
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Section */}
       <section id="home" className="relative overflow-hidden scroll-mt-20 bg-gradient-hero pattern-dots">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
-        <motion.div 
-          className="container-wide relative z-10 section-padding"
-          style={{ y: heroY, opacity: heroOpacity }}
-        >
+        <motion.div className="container-wide relative z-10 section-padding" style={{
+        y: heroY,
+        opacity: heroOpacity
+      }}>
           <div className="text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.8,
+            ease: "easeOut"
+          }}>
               <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
                 <Sparkles className="w-3.5 h-3.5 mr-1" />
                 7+ Years of Excellence
@@ -190,12 +245,16 @@ const Home = () => {
               </p>
             </motion.div>
             
-            <motion.div 
-              className="flex flex-wrap justify-center gap-3 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+            <motion.div className="flex flex-wrap justify-center gap-3 mb-8" initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.8,
+            delay: 0.2
+          }}>
               <Button onClick={() => scrollToSection("contact")} size="lg" className="group shadow-primary">
                 <span>Book Service</span>
                 <Zap className="w-4 h-4 ml-2 group-hover:scale-110 transition-transform" />
@@ -204,36 +263,39 @@ const Home = () => {
                 <Phone className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                 Call Now
               </Button>
-              <Button 
-                onClick={() => openWhatsApp({ 
-                  type: "general", 
-                  sourceSection: "Website - Hero Section" 
-                })} 
-                size="lg" 
-                className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white group"
-              >
+              <Button onClick={() => openWhatsApp({
+              type: "general",
+              sourceSection: "Website - Hero Section"
+            })} size="lg" className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white group">
                 <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 WhatsApp
               </Button>
             </motion.div>
 
-            <motion.div
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              {[
-                { label: "AC Units Serviced", value: "10,000+" },
-                { label: "Happy Customers", value: "5,000+" },
-                { label: "Google Rating", value: "5.0/5" },
-                { label: "Same Day Service", value: "Available" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
+            <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto" initial={{
+            opacity: 0
+          }} animate={{
+            opacity: 1
+          }} transition={{
+            duration: 0.8,
+            delay: 0.4
+          }}>
+              {[{
+              label: "AC Units Serviced",
+              value: "10,000+"
+            }, {
+              label: "Happy Customers",
+              value: "5,000+"
+            }, {
+              label: "Google Rating",
+              value: "5.0/5"
+            }, {
+              label: "Same Day Service",
+              value: "Available"
+            }].map((stat, i) => <div key={i} className="text-center">
                   <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">{stat.value}</div>
                   <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
+                </div>)}
             </motion.div>
           </div>
         </motion.div>
@@ -242,33 +304,50 @@ const Home = () => {
       {/* Why Choose Us */}
       <section className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <h2 className="mb-3">Why Choose Us?</h2>
             <p className="text-muted-foreground text-base max-w-2xl mx-auto">
               Trusted by thousands in Pune & PCMC for professional AC services
             </p>
           </motion.div>
           
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-          >
-            {[
-              { icon: Clock, title: "Same-Day Service", desc: "Quick response for urgent repairs", gradient: "from-blue-500 to-cyan-500" },
-              { icon: Shield, title: "Warranty Assured", desc: "Service warranty on all work", gradient: "from-purple-500 to-pink-500" },
-              { icon: Users, title: "Expert Team", desc: "Certified technicians", gradient: "from-orange-500 to-red-500" },
-              { icon: TrendingUp, title: "Best Rates", desc: "Transparent pricing", gradient: "from-green-500 to-teal-500" }
-            ].map((item, index) => (
-              <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.5 }}>
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" initial="hidden" whileInView="visible" viewport={{
+          once: true,
+          margin: "-100px"
+        }} variants={staggerContainer}>
+            {[{
+            icon: Clock,
+            title: "Same-Day Service",
+            desc: "Quick response for urgent repairs",
+            gradient: "from-blue-500 to-cyan-500"
+          }, {
+            icon: Shield,
+            title: "Warranty Assured",
+            desc: "Service warranty on all work",
+            gradient: "from-purple-500 to-pink-500"
+          }, {
+            icon: Users,
+            title: "Expert Team",
+            desc: "Certified technicians",
+            gradient: "from-orange-500 to-red-500"
+          }, {
+            icon: TrendingUp,
+            title: "Best Rates",
+            desc: "Transparent pricing",
+            gradient: "from-green-500 to-teal-500"
+          }].map((item, index) => <motion.div key={index} variants={fadeInUp} transition={{
+            duration: 0.5
+          }}>
                 <Card className="text-center card-hover card-glow h-full border-0 shadow-md bg-gradient-card">
                   <CardHeader className="pb-4">
                     <div className={`mx-auto w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center mb-4 icon-container-glow shadow-colored`}>
@@ -278,8 +357,7 @@ const Home = () => {
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </CardHeader>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
         </div>
       </section>
@@ -287,28 +365,29 @@ const Home = () => {
       {/* Services & Pricing Section */}
       <section id="services" className="section-padding-sm bg-gradient-to-b from-background to-accent/30 scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <h2 className="mb-3">Our Services & Pricing</h2>
             <p className="text-muted-foreground text-base max-w-2xl mx-auto">
               Complete AC solutions with transparent pricing. No hidden charges, just honest service.
             </p>
           </motion.div>
           
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {services.sort((a, b) => a.displayOrder - b.displayOrder).map((service, index) => (
-              <motion.div key={service.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10" initial="hidden" whileInView="visible" viewport={{
+          once: true
+        }} variants={staggerContainer}>
+            {services.sort((a, b) => a.displayOrder - b.displayOrder).map((service, index) => <motion.div key={service.id} variants={fadeInUp} transition={{
+            duration: 0.5
+          }}>
                 <Card className="h-full card-hover card-glow border-0 shadow-md bg-gradient-card overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8" />
                   <CardHeader className="pb-3 relative">
@@ -319,66 +398,56 @@ const Home = () => {
                     <div className="mb-3">
                       <div className="text-2xl font-bold text-gradient">{service.priceLabel}</div>
                     </div>
-                    {service.covered && service.covered.length > 0 && (
-                      <div className="pt-3 border-t border-border/50">
+                    {service.covered && service.covered.length > 0 && <div className="pt-3 border-t border-border/50">
                         <span className="text-xs font-semibold text-foreground block mb-2 flex items-center gap-1.5">
                           <CheckCircle className="w-3.5 h-3.5 text-primary" />
                           What's Covered:
                         </span>
                         <ul className="space-y-1.5">
-                          {service.covered.slice(0, 3).map((item, idx) => (
-                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                          {service.covered.slice(0, 3).map((item, idx) => <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
                               <span className="text-primary flex-shrink-0 mt-0.5">✓</span>
                               <span>{item}</span>
-                            </li>
-                          ))}
+                            </li>)}
                         </ul>
-                      </div>
-                    )}
+                      </div>}
                   </CardContent>
                   <CardFooter className="gap-2 pt-0">
-                    <Button 
-                      onClick={() => openWhatsApp({ 
-                        type: "service",
-                        serviceName: service.name,
-                        priceLabel: service.priceLabel,
-                        description: service.description,
-                        sourceSection: "Website - Services Section (Book Now)"
-                      })}
-                      size="sm" 
-                      className="flex-1 shadow-primary"
-                    >
+                    <Button onClick={() => openWhatsApp({
+                  type: "service",
+                  serviceName: service.name,
+                  priceLabel: service.priceLabel,
+                  description: service.description,
+                  sourceSection: "Website - Services Section (Book Now)"
+                })} size="sm" className="flex-1 shadow-primary">
                       Book Now
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="gap-1.5" 
-                      onClick={() => openWhatsApp({ 
-                        type: "service",
-                        serviceName: service.name,
-                        priceLabel: service.priceLabel,
-                        description: service.description,
-                        sourceSection: "Website - Services Section (Ask)"
-                      })}
-                    >
+                    <Button variant="outline" size="sm" className="gap-1.5" onClick={() => openWhatsApp({
+                  type: "service",
+                  serviceName: service.name,
+                  priceLabel: service.priceLabel,
+                  description: service.description,
+                  sourceSection: "Website - Services Section (Ask)"
+                })}>
                       <MessageCircle className="w-3.5 h-3.5" />
                       Ask
                     </Button>
                   </CardFooter>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
 
           {/* Important Notes & GST Info */}
-          <motion.div 
-            className="grid md:grid-cols-2 gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <motion.div className="grid md:grid-cols-2 gap-6" initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }}>
             <Card className="bg-background border-border shadow-md">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -441,13 +510,17 @@ const Home = () => {
       {/* Testimonials Section */}
       <section className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20">
               <HeartHandshake className="w-3.5 h-3.5 mr-1" />
               Customer Testimonials
@@ -458,15 +531,12 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {testimonials.filter(t => t.show_on_home).map((testimonial, index) => (
-              <motion.div key={testimonial.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{
+          once: true
+        }} variants={staggerContainer}>
+            {testimonials.filter(t => t.show_on_home).map((testimonial, index) => <motion.div key={testimonial.id} variants={fadeInUp} transition={{
+            duration: 0.5
+          }}>
                 <Card className="h-full card-hover card-glow border-0 shadow-md bg-gradient-card">
                   <CardHeader className="pb-4">
                     <div className="flex items-start justify-between mb-2">
@@ -477,9 +547,9 @@ const Home = () => {
                       <Quote className="w-8 h-8 text-primary/20" />
                     </div>
                     <div className="flex gap-0.5">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
+                      {Array.from({
+                    length: testimonial.rating
+                  }).map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -488,23 +558,22 @@ const Home = () => {
                     </p>
                   </CardContent>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
 
-          <motion.div 
-            className="text-center mt-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Button
-              onClick={() => window.open("https://www.google.com/search?q=comfort+technical+services+pune", "_blank")}
-              variant="outline"
-              size="lg"
-              className="gap-2 group"
-            >
+          <motion.div className="text-center mt-10" initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }}>
+            <Button onClick={() => window.open("https://www.google.com/search?q=comfort+technical+services+pune", "_blank")} variant="outline" size="lg" className="gap-2 group">
               <Star className="w-4 h-4 text-yellow-400 fill-yellow-400 group-hover:scale-110 transition-transform" />
               Read More Reviews on Google
             </Button>
@@ -516,13 +585,17 @@ const Home = () => {
       {/* AMC Plans */}
       <section id="amc" className="section-padding-sm bg-gradient-to-b from-accent/30 to-background scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <Badge className="mb-4 px-4 py-1.5 bg-secondary/10 text-secondary border-secondary/20">
               <Award className="w-3.5 h-3.5 mr-1" />
               AMC Plans
@@ -533,25 +606,18 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {activePlans.map((plan, index) => (
-              <motion.div key={plan.id} variants={fadeInUp} transition={{ duration: 0.5 }}>
-                <Card className={`card-hover card-glow h-full border-0 shadow-md relative overflow-hidden ${
-                  index === 1 ? 'ring-2 ring-primary shadow-primary' : 'bg-gradient-card'
-                }`}>
-                  {index === 1 && (
-                    <div className="absolute top-4 right-4">
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{
+          once: true
+        }} variants={staggerContainer}>
+            {activePlans.map((plan, index) => <motion.div key={plan.id} variants={fadeInUp} transition={{
+            duration: 0.5
+          }}>
+                <Card className={`card-hover card-glow h-full border-0 shadow-md relative overflow-hidden ${index === 1 ? 'ring-2 ring-primary shadow-primary' : 'bg-gradient-card'}`}>
+                  {index === 1 && <div className="absolute top-4 right-4">
                       <Badge className="bg-primary text-primary-foreground shadow-primary">
                         Popular
                       </Badge>
-                    </div>
-                  )}
+                    </div>}
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-primary" />
                   <CardHeader className="pb-4">
                     <CardTitle className="text-xl mb-1">{plan.name}</CardTitle>
@@ -563,46 +629,36 @@ const Home = () => {
                   </CardHeader>
                   <CardContent className="pb-4">
                     <ul className="space-y-2.5">
-                      {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5">
+                      {plan.features.map((feature, idx) => <li key={idx} className="flex items-start gap-2.5">
                           <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                           <span className="text-sm text-foreground">{feature}</span>
-                        </li>
-                      ))}
+                        </li>)}
                     </ul>
                   </CardContent>
                   <CardFooter className="flex gap-2">
-                    <Button 
-                      onClick={() => openWhatsApp({
-                        type: "amc",
-                        planName: plan.name,
-                        visitsPerYear: plan.visitsPerYear,
-                        priceLabel: plan.priceLabel,
-                        targetCustomer: plan.targetCustomer,
-                        sourceSection: "Website - AMC Plans Section (Enquire Now)"
-                      })}
-                      className="flex-1 shadow-primary"
-                    >
+                    <Button onClick={() => openWhatsApp({
+                  type: "amc",
+                  planName: plan.name,
+                  visitsPerYear: plan.visitsPerYear,
+                  priceLabel: plan.priceLabel,
+                  targetCustomer: plan.targetCustomer,
+                  sourceSection: "Website - AMC Plans Section (Enquire Now)"
+                })} className="flex-1 shadow-primary">
                       Enquire Now
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      onClick={() => openWhatsApp({
-                        type: "amc",
-                        planName: plan.name,
-                        visitsPerYear: plan.visitsPerYear,
-                        priceLabel: plan.priceLabel,
-                        targetCustomer: plan.targetCustomer,
-                        sourceSection: "Website - AMC Plans Section (Quick Ask)"
-                      })}
-                    >
+                    <Button variant="outline" size="icon" onClick={() => openWhatsApp({
+                  type: "amc",
+                  planName: plan.name,
+                  visitsPerYear: plan.visitsPerYear,
+                  priceLabel: plan.priceLabel,
+                  targetCustomer: plan.targetCustomer,
+                  sourceSection: "Website - AMC Plans Section (Quick Ask)"
+                })}>
                       <MessageCircle className="w-4 h-4" />
                     </Button>
                   </CardFooter>
                 </Card>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
         </div>
       </section>
@@ -610,13 +666,17 @@ const Home = () => {
       {/* Price Calculator Section */}
       <section className="section-padding-sm bg-gradient-to-b from-background via-primary/5 to-background scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <Badge className="mb-4 px-4 py-1.5 bg-primary/10 text-primary border-primary/20">
               <Zap className="w-3.5 h-3.5 mr-1" />
               Instant Estimates
@@ -627,12 +687,18 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6,
+          delay: 0.2
+        }}>
             <PriceCalculator />
           </motion.div>
         </div>
@@ -641,13 +707,17 @@ const Home = () => {
       {/* Service Areas */}
       <section id="service-areas" className="section-padding-sm bg-background scroll-mt-20">
         <div className="container-wide">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 20
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-12">
             <h2 className="mb-3">Service Areas</h2>
             <p className="text-muted-foreground text-base max-w-2xl mx-auto">
               Serving Pune and Pimpri Chinchwad with fast, reliable AC service
@@ -658,32 +728,36 @@ const Home = () => {
             <Button variant={selectedCity === null ? "default" : "outline"} size="sm" onClick={() => setSelectedCity(null)}>
               All Areas
             </Button>
-            {cities.map(city => (
-              <Button key={city} variant={selectedCity === city ? "default" : "outline"} size="sm" onClick={() => setSelectedCity(city)}>
+            {cities.map(city => <Button key={city} variant={selectedCity === city ? "default" : "outline"} size="sm" onClick={() => setSelectedCity(city)}>
                 {city}
-              </Button>
-            ))}
+              </Button>)}
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div 
-              key={selectedCity || "all"}
-              className="flex flex-wrap gap-2 justify-center mb-6"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.25 }}
-            >
-              {filteredAreas.map((area, index) => (
-                <motion.div
-                  key={area.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.02, duration: 0.25 }}
-                >
+            <motion.div key={selectedCity || "all"} className="flex flex-wrap gap-2 justify-center mb-6" initial={{
+            opacity: 0,
+            scale: 0.95
+          }} animate={{
+            opacity: 1,
+            scale: 1
+          }} exit={{
+            opacity: 0,
+            scale: 0.95
+          }} transition={{
+            duration: 0.25
+          }}>
+              {filteredAreas.map((area, index) => <motion.div key={area.id} initial={{
+              opacity: 0,
+              y: 10
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} transition={{
+              delay: index * 0.02,
+              duration: 0.25
+            }}>
                   <Badge variant="secondary" className="px-3 py-1.5 text-xs">{area.area_name}</Badge>
-                </motion.div>
-              ))}
+                </motion.div>)}
             </motion.div>
           </AnimatePresence>
 
@@ -695,14 +769,11 @@ const Home = () => {
               <p className="text-xs text-muted-foreground mb-3">
                 Contact us to check if we serve your location
               </p>
-              <Button 
-                onClick={() => openWhatsApp({
-                  type: "general",
-                  sourceSection: "Website - Service Areas Section",
-                  customMessage: "*Service Area Enquiry*\n\nI'd like to check if you service my area.\n\nMy Location: (please specify)\n\nName: \nMobile Number: \n\n*Source:* Website - Service Areas Section"
-                })}
-                className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
-              >
+              <Button onClick={() => openWhatsApp({
+              type: "general",
+              sourceSection: "Website - Service Areas Section",
+              customMessage: "*Service Area Enquiry*\n\nI'd like to check if you service my area.\n\nMy Location: (please specify)\n\nName: \nMobile Number: \n\n*Source:* Website - Service Areas Section"
+            })} className="gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white">
                 <MessageCircle className="w-4 h-4" />Check Availability
               </Button>
             </CardContent>
@@ -718,90 +789,75 @@ const Home = () => {
             Professional AC services in action
           </p>
 
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {galleryImages.map((image, index) => (
-              <motion.div
-                key={image.id}
-                variants={fadeInUp}
-                transition={{ duration: 0.3 }}
-                className="group relative overflow-hidden rounded-lg cursor-pointer aspect-[4/3]"
-                onClick={() => setSelectedImageIndex(index)}
-              >
-                <LazyImage
-                  src={image.image_url}
-                  alt={image.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" initial="hidden" whileInView="visible" viewport={{
+          once: true
+        }} variants={staggerContainer}>
+            {galleryImages.map((image, index) => <motion.div key={image.id} variants={fadeInUp} transition={{
+            duration: 0.3
+          }} className="group relative overflow-hidden rounded-lg cursor-pointer aspect-[4/3]" onClick={() => setSelectedImageIndex(index)}>
+                <LazyImage src={image.image_url} alt={image.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-foreground/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end">
                   <div className="p-3 text-background">
                     <h3 className="font-medium text-sm">{image.title}</h3>
                     <p className="text-xs opacity-80 line-clamp-2">{image.description}</p>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </motion.div>
         </div>
 
         {/* Lightbox */}
         <AnimatePresence>
-          {selectedImage && (
-            <motion.div
-              className="fixed inset-0 bg-foreground/95 z-50 flex items-center justify-center p-4"
-              onClick={() => setSelectedImageIndex(null)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <motion.button
-                className="absolute top-4 right-4 text-background hover:text-background/70 z-10"
-                onClick={(e) => { e.stopPropagation(); setSelectedImageIndex(null); }}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
-              >
+          {selectedImage && <motion.div className="fixed inset-0 bg-foreground/95 z-50 flex items-center justify-center p-4" onClick={() => setSelectedImageIndex(null)} initial={{
+          opacity: 0
+        }} animate={{
+          opacity: 1
+        }} exit={{
+          opacity: 0
+        }} transition={{
+          duration: 0.2
+        }}>
+              <motion.button className="absolute top-4 right-4 text-background hover:text-background/70 z-10" onClick={e => {
+            e.stopPropagation();
+            setSelectedImageIndex(null);
+          }} initial={{
+            scale: 0
+          }} animate={{
+            scale: 1
+          }} exit={{
+            scale: 0
+          }}>
                 <X className="w-6 h-6" />
               </motion.button>
 
-              <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-background hover:text-background/70 bg-foreground/50 rounded-full p-2"
-                onClick={(e) => { e.stopPropagation(); handlePrevious(); }}
-              >
+              <button className="absolute left-4 top-1/2 -translate-y-1/2 text-background hover:text-background/70 bg-foreground/50 rounded-full p-2" onClick={e => {
+            e.stopPropagation();
+            handlePrevious();
+          }}>
                 <ChevronLeft className="w-6 h-6" />
               </button>
 
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-background hover:text-background/70 bg-foreground/50 rounded-full p-2"
-                onClick={(e) => { e.stopPropagation(); handleNext(); }}
-              >
+              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-background hover:text-background/70 bg-foreground/50 rounded-full p-2" onClick={e => {
+            e.stopPropagation();
+            handleNext();
+          }}>
                 <ChevronRight className="w-6 h-6" />
               </button>
 
-              <motion.div 
-                className="max-w-4xl max-h-[90vh] flex flex-col items-center"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {lightboxImageLoading && (
-                  <div className="absolute inset-0 flex items-center justify-center">
+              <motion.div className="max-w-4xl max-h-[90vh] flex flex-col items-center" initial={{
+            scale: 0.8,
+            opacity: 0
+          }} animate={{
+            scale: 1,
+            opacity: 1
+          }} exit={{
+            scale: 0.8,
+            opacity: 0
+          }} onClick={e => e.stopPropagation()}>
+                {lightboxImageLoading && <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-8 h-8 border-4 border-background/30 border-t-background rounded-full animate-spin" />
-                  </div>
-                )}
-                <img
-                  src={selectedImage.image_url}
-                  alt={selectedImage.title}
-                  className={`max-w-full max-h-[80vh] object-contain rounded-lg ${lightboxImageLoading ? 'opacity-0' : 'opacity-100'}`}
-                  onLoad={() => setLightboxImageLoading(false)}
-                />
+                  </div>}
+                <img src={selectedImage.image_url} alt={selectedImage.title} className={`max-w-full max-h-[80vh] object-contain rounded-lg ${lightboxImageLoading ? 'opacity-0' : 'opacity-100'}`} onLoad={() => setLightboxImageLoading(false)} />
                 <div className="text-background mt-3 text-center">
                   <p className="text-sm font-medium">{selectedImage.title}</p>
                   <p className="text-xs opacity-70">
@@ -809,8 +865,7 @@ const Home = () => {
                   </p>
                 </div>
               </motion.div>
-            </motion.div>
-          )}
+            </motion.div>}
         </AnimatePresence>
       </section>
 
@@ -836,33 +891,29 @@ const Home = () => {
             </Card>
           </div>
 
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
+          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" initial="hidden" whileInView="visible" viewport={{
+          once: true
+        }} variants={staggerContainer}>
             {stats.map((stat, index) => {
-              const StatCounter = () => {
-                const { count, ref } = useCountUp(stat.value, 2000);
-                return (
-                  <div ref={ref} className="text-2xl font-bold text-primary mb-1">
+            const StatCounter = () => {
+              const {
+                count,
+                ref
+              } = useCountUp(stat.value, 2000);
+              return <div ref={ref} className="text-2xl font-bold text-primary mb-1">
                     {stat.isDecimal ? count.toFixed(1) : count.toLocaleString()}{stat.suffix}
-                  </div>
-                );
-              };
-
-              return (
-                <motion.div key={index} variants={fadeInUp} transition={{ duration: 0.3 }}>
+                  </div>;
+            };
+            return <motion.div key={index} variants={fadeInUp} transition={{
+              duration: 0.3
+            }}>
                   <Card className="text-center p-4">
                     <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
                     <StatCounter />
                     <div className="text-xs text-muted-foreground">{stat.label}</div>
                   </Card>
-                </motion.div>
-              );
-            })}
+                </motion.div>;
+          })}
           </motion.div>
 
           <div className="max-w-5xl mx-auto">
@@ -873,16 +924,19 @@ const Home = () => {
               
               <div className="space-y-12">
                 {milestones.map((milestone, index) => {
-                  const isLeft = index % 2 === 0;
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.15, duration: 0.5 }}
-                      className="relative"
-                    >
+                const isLeft = index % 2 === 0;
+                return <motion.div key={index} initial={{
+                  opacity: 0,
+                  x: isLeft ? -50 : 50
+                }} whileInView={{
+                  opacity: 1,
+                  x: 0
+                }} viewport={{
+                  once: true
+                }} transition={{
+                  delay: index * 0.15,
+                  duration: 0.5
+                }} className="relative">
                       <div className={`flex items-center gap-8 ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                         {/* Card */}
                         <div className="flex-1">
@@ -918,9 +972,8 @@ const Home = () => {
                           <milestone.icon className="w-5 h-5 text-primary-foreground" />
                         </div>
                       </div>
-                    </motion.div>
-                  );
-                })}
+                    </motion.div>;
+              })}
               </div>
             </div>
           </div>
@@ -936,29 +989,29 @@ const Home = () => {
               <Button variant={selectedCategory === null ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(null)}>
                 All
               </Button>
-              {categories.map(category => (
-                <Button key={category} variant={selectedCategory === category ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(category)}>
+              {categories.map(category => <Button key={category} variant={selectedCategory === category ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(category)}>
                   {category}
-                </Button>
-              ))}
+                </Button>)}
             </div>
 
             <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedCategory || "all"}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.25 }}
-                className="max-w-2xl mx-auto"
-              >
+              <motion.div key={selectedCategory || "all"} initial={{
+              opacity: 0,
+              y: 20
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} exit={{
+              opacity: 0,
+              y: -20
+            }} transition={{
+              duration: 0.25
+            }} className="max-w-2xl mx-auto">
                 <Accordion type="single" collapsible className="w-full">
-                  {filteredFaqs.map((faq, index) => (
-                    <AccordionItem key={faq.id} value={`item-${index}`}>
+                  {filteredFaqs.map((faq, index) => <AccordionItem key={faq.id} value={`item-${index}`}>
                       <AccordionTrigger className="text-sm text-left py-3">{faq.question}</AccordionTrigger>
                       <AccordionContent className="text-sm text-muted-foreground pb-4">{faq.answer}</AccordionContent>
-                    </AccordionItem>
-                  ))}
+                    </AccordionItem>)}
                 </Accordion>
               </motion.div>
             </AnimatePresence>
@@ -1004,13 +1057,10 @@ const Home = () => {
                     <MessageCircle className="w-4 h-4 text-primary mt-0.5" />
                     <div>
                       <p className="text-sm font-medium">WhatsApp</p>
-                      <button 
-                        onClick={() => openWhatsApp({
-                          type: "general",
-                          sourceSection: "Website - Contact Section (Quick Chat)"
-                        })} 
-                        className="text-xs text-primary hover:underline"
-                      >
+                      <button onClick={() => openWhatsApp({
+                      type: "general",
+                      sourceSection: "Website - Contact Section (Quick Chat)"
+                    })} className="text-xs text-primary hover:underline">
                         Chat on WhatsApp
                       </button>
                     </div>
@@ -1031,13 +1081,10 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-xs text-muted-foreground mb-3">For quick assistance, reach us on WhatsApp</p>
-                  <Button 
-                    onClick={() => openWhatsApp({
-                      type: "general",
-                      sourceSection: "Website - Contact Section (Quick Enquiry)"
-                    })}
-                    className="w-full gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
-                  >
+                  <Button onClick={() => openWhatsApp({
+                  type: "general",
+                  sourceSection: "Website - Contact Section (Quick Enquiry)"
+                })} className="w-full gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white">
                     <MessageCircle className="w-4 h-4" />Open WhatsApp
                   </Button>
                 </CardContent>
@@ -1053,20 +1100,29 @@ const Home = () => {
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <div>
                     <Label htmlFor="name" className="text-xs">Full Name *</Label>
-                    <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Your name" required className="h-9" />
+                    <Input id="name" value={formData.name} onChange={e => setFormData({
+                    ...formData,
+                    name: e.target.value
+                  })} placeholder="Your name" required className="h-9" />
                   </div>
 
                   <div>
                     <Label htmlFor="phone" className="text-xs">Mobile Number *</Label>
-                    <Input id="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="10-digit number" required className="h-9" />
+                    <Input id="phone" type="tel" value={formData.phone} onChange={e => setFormData({
+                    ...formData,
+                    phone: e.target.value
+                  })} placeholder="10-digit number" required className="h-9" />
                   </div>
 
                   <div>
                     <Label htmlFor="serviceType" className="text-xs">Service Type *</Label>
-                    <Select value={formData.serviceType} onValueChange={(value) => setFormData({ ...formData, serviceType: value })}>
+                    <Select value={formData.serviceType} onValueChange={value => setFormData({
+                    ...formData,
+                    serviceType: value
+                  })}>
                       <SelectTrigger className="h-9"><SelectValue placeholder="Select service" /></SelectTrigger>
                       <SelectContent>
-                        {SERVICES.map((service) => <SelectItem key={service.id} value={service.name}>{service.name}</SelectItem>)}
+                        {SERVICES.map(service => <SelectItem key={service.id} value={service.name}>{service.name}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   </div>
@@ -1074,7 +1130,10 @@ const Home = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <Label htmlFor="acType" className="text-xs">AC Type *</Label>
-                      <Select value={formData.acType} onValueChange={(value) => setFormData({ ...formData, acType: value })}>
+                      <Select value={formData.acType} onValueChange={value => setFormData({
+                      ...formData,
+                      acType: value
+                    })}>
                         <SelectTrigger className="h-9"><SelectValue placeholder="Select type" /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="Split">Split AC</SelectItem>
@@ -1086,29 +1145,44 @@ const Home = () => {
                     </div>
                     <div>
                       <Label htmlFor="units" className="text-xs">Units *</Label>
-                      <Input id="units" type="number" min="1" value={formData.units} onChange={(e) => setFormData({ ...formData, units: e.target.value })} className="h-9" />
+                      <Input id="units" type="number" min="1" value={formData.units} onChange={e => setFormData({
+                      ...formData,
+                      units: e.target.value
+                    })} className="h-9" />
                     </div>
                   </div>
 
                   <div>
                     <Label htmlFor="address" className="text-xs">Address *</Label>
-                    <Textarea id="address" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} placeholder="Full address" required className="min-h-[60px]" />
+                    <Textarea id="address" value={formData.address} onChange={e => setFormData({
+                    ...formData,
+                    address: e.target.value
+                  })} placeholder="Full address" required className="min-h-[60px]" />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <Label htmlFor="city" className="text-xs">City *</Label>
-                      <Input id="city" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} placeholder="e.g., Pune" required className="h-9" />
+                      <Input id="city" value={formData.city} onChange={e => setFormData({
+                      ...formData,
+                      city: e.target.value
+                    })} placeholder="e.g., Pune" required className="h-9" />
                     </div>
                     <div>
                       <Label htmlFor="pincode" className="text-xs">Pincode</Label>
-                      <Input id="pincode" value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} placeholder="6 digits" className="h-9" />
+                      <Input id="pincode" value={formData.pincode} onChange={e => setFormData({
+                      ...formData,
+                      pincode: e.target.value
+                    })} placeholder="6 digits" className="h-9" />
                     </div>
                   </div>
 
                   <div>
                     <Label htmlFor="preferredContactMode" className="text-xs">Contact Via *</Label>
-                    <Select value={formData.preferredContactMode} onValueChange={(value) => setFormData({ ...formData, preferredContactMode: value })}>
+                    <Select value={formData.preferredContactMode} onValueChange={value => setFormData({
+                    ...formData,
+                    preferredContactMode: value
+                  })}>
                       <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Call">Call</SelectItem>
@@ -1126,36 +1200,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-accent border-t">
-        <div className="container-wide py-6">
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <h3 className="font-semibold mb-2 text-sm">{CONTACT_INFO.companyName}</h3>
-              <p className="text-xs text-muted-foreground">{CONTACT_INFO.experienceText}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2 text-sm">Contact</h3>
-              <div className="space-y-1 text-xs text-muted-foreground">
-                <p>Phone: {CONTACT_INFO.phone}</p>
-                <p>Email: {CONTACT_INFO.email}</p>
-                <p>{CONTACT_INFO.workingHours}</p>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2 text-sm">Business Details</h3>
-              <div className="space-y-1 text-xs text-muted-foreground">
-                <p>GSTIN: {CONTACT_INFO.gstin}</p>
-                <p>PAN: {CONTACT_INFO.pan}</p>
-              </div>
-            </div>
-          </div>
-          <div className="text-center text-xs text-muted-foreground border-t pt-4">
-            © {new Date().getFullYear()} {CONTACT_INFO.companyName}. All rights reserved.
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+      
+    </div>;
 };
-
 export default Home;
